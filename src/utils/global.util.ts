@@ -1,3 +1,6 @@
+import * as path from 'path'
+import * as vscode from 'vscode'
+
 export const createEntryHtml = () => {
   return `<!DOCTYPE html>
     <html>
@@ -45,7 +48,17 @@ export const createContentEntry = (port = 9123) => {
 }
 
 export const createEntry = (entryPath: string | undefined) => `
-    import { createApp } from 'vue';\n\n
+    import { createApp } from './vue';\n\n
     import App from '${entryPath}';\n\n  
     createApp(App).mount('#app');
 `
+
+export const getFileExt = (fileName: string) => {
+  const ext = /^.+\.([^.]+)$/.exec(fileName)
+  return ext == null ? '' : ext[1]
+}
+
+export const getWorkSpacePath = () => {
+  const { rootPath: workspacePath = '' } = vscode.workspace
+  return path.join(path.normalize(workspacePath), '.vue-playground')
+}
